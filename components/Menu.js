@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Animated, Easing, StyleSheet, View } from 'react-native';
 import MenuButton from './MenuButton';
-import PlusButton from './PlusButton';
+import NavToggle from './NavToggle';
 import Sizes from '../constants/Sizes';
 import Colors from '../constants/Colors';
 
@@ -35,9 +35,7 @@ export default class Menu extends Component {
           <MenuButton key="edit" label="Edit" icon="pencil" onPress={this._onEditButtonPress}/>
           <MenuButton key="delete" label="Delete" icon="trashcan" onPress={this._onDeleteButtonPress}/>
         </Animated.View>
-        <Animated.View style={{ transform: [{ rotate }] }}>
-          <PlusButton onPress={this._onPlusButtonPress} />
-        </Animated.View>
+        <NavToggle onPress={this._onPlusButtonPress} rotate={rotate}/>
       </View>
     );
   }
@@ -117,5 +115,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.BACKGROUND,
     marginBottom: Sizes.S,
-  }
+  },
 });
