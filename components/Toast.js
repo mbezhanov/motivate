@@ -7,16 +7,20 @@ const ANIMATION_DURATION = 600; // milliseconds;
 const TOAST_DURATION = 2000; // milliseconds
 
 export default class Toast extends Component {
-  state = {
-    opacity: new Animated.Value(0),
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      opacity: new Animated.Value(0),
+    };
+    this.fadeOutTimeout = null;
+  }
 
   componentDidMount() {
     Animated.timing(this.state.opacity, {
       toValue: 1,
       duration: ANIMATION_DURATION,
     }).start(() => {
-      setTimeout(() => {
+      this.fadeOutTimeout = setTimeout(() => {
         Animated.timing(this.state.opacity, {
           toValue: 0,
           duration: ANIMATION_DURATION,
@@ -25,6 +29,10 @@ export default class Toast extends Component {
         });
       }, TOAST_DURATION);
     });
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.fadeOutTimeout);
   }
 
   render() {
