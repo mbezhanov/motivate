@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, ImageBackground, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
 import StyledText from '../components/StyledText';
-import PlusButton from '../components/PlusButton';
+import Menu from '../components/Menu';
 import Quote from '../components/Quote';
 import Toast from '../components/Toast';
 import Sizes from '../constants/Sizes';
@@ -45,7 +45,11 @@ class HomeScreen extends Component {
           <View style={styles.toastContainer}>
             {toast}
           </View>
-          <PlusButton onPress={this._handlePlusButtonPressed} />
+          <Menu
+            quote={this.state.quote}
+            navigation={this.props.navigation}
+            onDelete={id => this._handleDelete(id)}
+          />
         </ScrollView>
       </ImageBackground>
     );
@@ -55,14 +59,24 @@ class HomeScreen extends Component {
     this._displayRandomQuote();
   }
 
-  _handlePlusButtonPressed = () => {
-    this.props.navigation.push('AddQuote');
-  };
-
   _handleRefresh = () => {
     this.setState({ loaded: false }, () => {
       this._displayRandomQuote();
     });
+  };
+
+  _handleDelete = (id) => {
+    Quotes
+      .delete(id)
+      .then(() => {
+        this._displayRandomQuote();
+      })
+      .catch(() => {
+        this.setState({
+          loaded: true,
+          toast: 'error',
+        });
+      });
   };
 
   _displayRandomQuote = () => {

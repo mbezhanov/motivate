@@ -16,7 +16,26 @@ class Quotes {
         });
       }, error => reject(error));
     });
+  };
 
+  update = (id, quote, author, book) => {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql('update quotes set content = ?, author = ?, book = ? where id = ?;', [quote, author, book, id], (tx, resultSet) => {
+          resolve(resultSet.rowsAffected);
+        });
+      }, error => reject(error));
+    });
+  };
+
+  delete = (id) => {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql('delete from quotes where id = ?;', [id], (tx, resultSet) => {
+          resolve(resultSet.rowsAffected);
+        });
+      }, error => reject(error));
+    });
   };
 
   random = () => {

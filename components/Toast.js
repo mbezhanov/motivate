@@ -48,7 +48,7 @@ export default class Toast extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: '33%',
+    width: '40%',
     borderRadius: Sizes.M,
     padding: Sizes.M / 2,
     margin: Sizes.M,

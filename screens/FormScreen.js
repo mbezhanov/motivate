@@ -7,13 +7,14 @@ import Colors from '../constants/Colors';
 import Quotes from '../db/Quotes';
 
 const initialState = {
+  id: null,
   author: null,
   book: null,
   quote: null,
   toast: null,
 };
 
-export default class AddQuoteScreen extends Component {
+export default class FormScreen extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     headerStyle: {
@@ -22,7 +23,7 @@ export default class AddQuoteScreen extends Component {
       borderBottomWidth: 0,
     },
     headerTintColor: Colors.TEXT,
-    headerTitle: 'Add Quote',
+    headerTitle: navigation.state.params.headerTitle,
     headerRight: <SubmitButton onPress={(navigation.state.params || {}).onSubmit}/>
   });
 
@@ -49,10 +50,29 @@ export default class AddQuoteScreen extends Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ onSubmit: this._submitForm });
+
+    if (this.props.navigation.state.params && this.props.navigation.state.params.quote) {
+      const quote = this.props.navigation.state.params.quote;
+      this.setState({
+        id: quote.id,
+        author: quote.author,
+        book: quote.book,
+        quote: quote.content,
+      });
+    }
   }
 
   _submitForm = () => {
     Keyboard.dismiss();
+
+    if (this.state.id) {
+      this._updateQuote();
+    } else {
+      this._insertQuote();
+    }
+  };
+
+  _insertQuote = () => {
     Quotes
       .insert(this.state.quote, this.state.author, this.state.book)
       .then(() => {
@@ -69,9 +89,24 @@ export default class AddQuoteScreen extends Component {
       });
   };
 
+  _updateQuote = () => {
+    Quotes
+      .update(this.state.id, this.state.quote, this.state.author, this.state.book)
+      .then(() => {
+        this.setState({
+          toast: 'quote updated',
+        });
+      })
+      .catch(() => {
+        this.setState({
+          toast: 'error',
+        });
+      });
+  };
+
   _destroyToast = () => {
     this.setState({ toast: null });
-  }
+  };
 }
 
 const styles = StyleSheet.create({
