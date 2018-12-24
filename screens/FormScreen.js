@@ -4,7 +4,7 @@ import StyledInput from '../components/StyledInput';
 import SubmitButton from '../components/SubmitButton';
 import Toast from '../components/Toast';
 import Colors from '../constants/Colors';
-import Quotes from '../db/Quotes';
+import Quotes from '../services/Quotes';
 
 const initialState = {
   id: null,

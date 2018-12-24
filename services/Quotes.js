@@ -54,6 +54,37 @@ class Quotes {
     });
   };
 
+  importCsv = (csv) => {
+    return new Promise((resolve, reject) => {
+      let rowsAffected = 0;
+      this.db.transaction(tx => {
+        csv.data.forEach(row => {
+          const content = row[0];
+          const author = row[1];
+          const book = row[2];
+
+          if (!content || !author || !book) {
+            return;
+          }
+          tx.executeSql('insert into quotes (content, author, book, times_seen) values (?, ?, ?, ?);', [content, author, book, 0], (tx, resultSet) => {
+            rowsAffected += resultSet.rowsAffected;
+          });
+        });
+      }, error => reject(error), () => resolve(rowsAffected));
+    });
+  };
+
+  exportCsv = () => {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql('select content, author, book, times_seen from quotes order by id asc;', [], (tx, resultSet) => {
+          const { rows: { _array }} = resultSet;
+          resolve(_array);
+        });
+      }, error => reject(error));
+    });
+  };
+
   _generateImageUrl = (quote) => {
     const MAX_ID = 1084;
     let sum = 0;

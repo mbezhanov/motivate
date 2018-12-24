@@ -5,7 +5,7 @@ import Menu from '../components/Menu';
 import Quote from '../components/Quote';
 import Toast from '../components/Toast';
 import Sizes from '../constants/Sizes';
-import Quotes from '../db/Quotes';
+import Quotes from '../services/Quotes';
 
 class HomeScreen extends Component {
 

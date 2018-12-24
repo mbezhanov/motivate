@@ -4,7 +4,7 @@ import Colors from '../constants/Colors';
 import Sizes from '../constants/Sizes';
 
 const strokedText = props => (
-  <View style={styles.container}>
+  <View style={{ ...styles.container, ...props.style }}>
     <View style={styles.textWrapper}>
       <Text style={[styles.outline, { fontSize: props.size }]}>{props.children}</Text>
       <Text style={[styles.text, { fontSize: props.size }]}>{props.children}</Text>

@@ -4,6 +4,7 @@ import MenuButton from './MenuButton';
 import NavToggle from './NavToggle';
 import Sizes from '../constants/Sizes';
 import Colors from '../constants/Colors';
+import Csv from '../services/Csv';
 
 const ANIMATION_DURATION = 200; // milliseconds;
 
@@ -31,6 +32,8 @@ export default class Menu extends Component {
     return (
       <View style={styles.container}>
         <Animated.View style={{ position: 'relative', right }}>
+          <MenuButton key="import" label="Import" icon="download" onPress={this._onImportButtonPress}/>
+          <MenuButton key="export" label="Export" icon="upload" onPress={this._onExportButtonPress}/>
           <MenuButton key="add" label="Add" icon="plus" onPress={this._onAddButtonPress}/>
           <MenuButton key="edit" label="Edit" icon="pencil" onPress={this._onEditButtonPress}/>
           <MenuButton key="delete" label="Delete" icon="trashcan" onPress={this._onDeleteButtonPress}/>
@@ -39,6 +42,32 @@ export default class Menu extends Component {
       </View>
     );
   }
+
+  _onImportButtonPress = () => {
+    this._toggleMenuItems(() => {
+      Csv
+        .importQuotes()
+        .then(count => {
+          Alert.alert('Success', `Imported ${count} quotes.`);
+        })
+        .catch(() => {
+          Alert.alert('Error', 'An error occurred.');
+        });
+    });
+  };
+
+  _onExportButtonPress = () => {
+    this._toggleMenuItems(() => {
+      Csv
+        .exportQuotes()
+        .then(count => {
+          Alert.alert('Success', `Exported ${count} quotes.`);
+        })
+        .catch(() => {
+          Alert.alert('Error', 'An error occurred.');
+        });
+    });
+  };
 
   _onAddButtonPress = () => {
     this._toggleMenuItems(() => {
