@@ -2,6 +2,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import { AppLoading } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+import LoremPicsum from './services/LoremPicsum';
 
 export default class App extends React.Component {
   state = {
@@ -23,7 +24,7 @@ export default class App extends React.Component {
   }
 
   _loadResourcesAsync = async () => {
-    await Promise.all([Image.prefetch('https://picsum.photos/480/960/?random')]);
+    await Promise.all([Image.prefetch(LoremPicsum.getDefaultImage())]);
   };
 
   _handleLoadingError = error => {

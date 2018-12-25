@@ -1,4 +1,5 @@
 import { SQLite } from 'expo';
+import LoremPicsum from './LoremPicsum';
 
 class Quotes {
   constructor() {
@@ -11,8 +12,12 @@ class Quotes {
   insert = (quote, author, book) => {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
-        tx.executeSql('insert into quotes (content, author, book) values (?, ?, ?);', [quote, author, book], (tx, resultSet) => {
-          resolve(resultSet.insertId);
+        tx.executeSql('select min(times_seen) as minTimesSeen from quotes;', [], (tx, resultSet) => {
+          const { rows: { _array }} = resultSet;
+          const minTimesSeen = _array[0].minTimesSeen || 0;
+          tx.executeSql('insert into quotes (content, author, book, times_seen) values (?, ?, ?, ?);', [quote, author, book, minTimesSeen], (tx, resultSet) => {
+            resolve(resultSet.insertId);
+          });
         });
       }, error => reject(error));
     });
@@ -41,14 +46,17 @@ class Quotes {
   random = () => {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
-        tx.executeSql('select * from quotes order by random() asc limit 1;', [], (tx, resultSet) => {
+        const randomDirection = Math.round(Math.random()) ? 'asc' : 'desc';
+        tx.executeSql(`select * from quotes order by times_seen asc, id ${randomDirection} limit 1;`, [], (tx, resultSet) => {
           const { rows: { _array }} = resultSet;
           const quote = _array.length > 0 ? _array[0] : null;
 
           if (quote) {
-            quote.imageUrl = this._generateImageUrl(quote.content);
+            quote.imageUrl = LoremPicsum.getRandomImage(quote.content);
+            tx.executeSql('update quotes set times_seen = times_seen + 1 where id = ?;', [quote.id], () => resolve(quote));
+          } else {
+            resolve(quote);
           }
-          resolve(quote);
         });
       }, error => reject(error));
     });
@@ -83,17 +91,6 @@ class Quotes {
         });
       }, error => reject(error));
     });
-  };
-
-  _generateImageUrl = (quote) => {
-    const MAX_ID = 1084;
-    let sum = 0;
-
-    for (let i = 0; i < quote.length; i++) {
-      sum += quote.charCodeAt(i);
-    }
-
-    return `https://picsum.photos/480/960?image=${sum % MAX_ID}`;
   };
 }
 

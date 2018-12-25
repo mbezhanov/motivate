@@ -6,6 +6,7 @@ import Quote from '../components/Quote';
 import Toast from '../components/Toast';
 import Sizes from '../constants/Sizes';
 import Quotes from '../services/Quotes';
+import LoremPicsum from '../services/LoremPicsum';
 
 class HomeScreen extends Component {
 
@@ -15,7 +16,7 @@ class HomeScreen extends Component {
     loaded: false,
     quote: null,
     toast: null,
-    imageUrl: 'https://picsum.photos/480/960/?random',
+    imageUrl: LoremPicsum.getDefaultImage(),
   };
 
   render() {
