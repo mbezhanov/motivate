@@ -15,7 +15,8 @@ class Quotes {
         tx.executeSql('select min(times_seen) as minTimesSeen from quotes;', [], (tx, resultSet) => {
           const { rows: { _array }} = resultSet;
           const minTimesSeen = _array[0].minTimesSeen || 0;
-          tx.executeSql('insert into quotes (content, author, book, times_seen) values (?, ?, ?, ?);', [quote, author, book, minTimesSeen], (tx, resultSet) => {
+          tx.executeSql('update quotes set times_seen = times_seen - ?;', [minTimesSeen]); // reset "times_seen" column
+          tx.executeSql('insert into quotes (content, author, book, times_seen) values (?, ?, ?, ?);', [quote, author, book, 0], (tx, resultSet) => {
             resolve(resultSet.insertId);
           });
         });
@@ -66,16 +67,25 @@ class Quotes {
     return new Promise((resolve, reject) => {
       let rowsAffected = 0;
       this.db.transaction(tx => {
-        csv.data.forEach(row => {
-          const content = row[0];
-          const author = row[1];
-          const book = row[2];
+        tx.executeSql('select min(times_seen) as minTimesSeen from quotes;', [], (tx, resultSet) => {
+          const { rows: { _array }} = resultSet;
+          const minTimesSeen = _array[0].minTimesSeen || 0;
+          // reset "times_seen" column
+          tx.executeSql('update quotes set times_seen = times_seen - ?;', [minTimesSeen], tx => {
+            // import quotes from CSV file
+            csv.data.forEach(row => {
+              const content = row[0];
+              const author = row[1];
+              const book = row[2];
+              const timesSeen = row[3] || 0;
 
-          if (!content || !author || !book) {
-            return;
-          }
-          tx.executeSql('insert into quotes (content, author, book, times_seen) values (?, ?, ?, ?);', [content, author, book, 0], (tx, resultSet) => {
-            rowsAffected += resultSet.rowsAffected;
+              if (!content || !author || !book) {
+                return;
+              }
+              tx.executeSql('insert into quotes (content, author, book, times_seen) values (?, ?, ?, ?);', [content, author, book, timesSeen], (tx, resultSet) => {
+                rowsAffected += resultSet.rowsAffected;
+              });
+            });
           });
         });
       }, error => reject(error), () => resolve(rowsAffected));

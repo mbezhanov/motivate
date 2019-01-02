@@ -1,4 +1,4 @@
-import { DocumentPicker, FileSystem } from 'expo';
+import { DocumentPicker, FileSystem, MailComposer } from 'expo';
 import Papa from 'papaparse';
 import moment from 'moment';
 import Quotes from './Quotes';
@@ -30,7 +30,15 @@ class Csv {
 
        return FileSystem
          .writeAsStringAsync(fileUri, Papa.unparse(quotes))
-         .then(() => quotes.length);
+         .then(() => {
+           return MailComposer
+             .composeAsync({
+               subject: 'exported quotes',
+               body: `Quotes exported on ${moment().format('YYYY-MM-DD-HH-mm-ss')}`,
+               attachments: [fileUri]
+             })
+             .then(() => quotes.length);
+         });
     });
  }
 }
