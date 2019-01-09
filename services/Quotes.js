@@ -1,6 +1,9 @@
 import { SQLite } from 'expo';
 import LoremPicsum from './LoremPicsum';
 
+export const IMPORT_MODE_APPEND = 1;
+export const IMPORT_MODE_OVERWRITE = 2;
+
 class Quotes {
   constructor() {
     this.db = SQLite.openDatabase('quotes.db');
@@ -63,10 +66,14 @@ class Quotes {
     });
   };
 
-  importCsv = (csv) => {
+  importCsv = (csv, mode) => {
     return new Promise((resolve, reject) => {
       let rowsAffected = 0;
       this.db.transaction(tx => {
+
+        if (mode === IMPORT_MODE_OVERWRITE) {
+          tx.executeSql('delete from quotes;');
+        }
         tx.executeSql('select min(times_seen) as minTimesSeen from quotes;', [], (tx, resultSet) => {
           const { rows: { _array }} = resultSet;
           const minTimesSeen = _array[0].minTimesSeen || 0;

@@ -1,7 +1,8 @@
+import { Alert } from 'react-native';
 import { DocumentPicker, FileSystem, MailComposer } from 'expo';
 import Papa from 'papaparse';
 import moment from 'moment';
-import Quotes from './Quotes';
+import Quotes, { IMPORT_MODE_APPEND, IMPORT_MODE_OVERWRITE } from './Quotes';
 
 class Csv {
  importQuotes = () => {
@@ -15,8 +16,19 @@ class Csv {
 
        return FileSystem
          .readAsStringAsync(document.uri)
-         .then(contents => Quotes.importCsv(Papa.parse(contents)).then(count => count));
+         .then(contents => new Promise((resolve, reject) => {
+           const onImportFinished = count => resolve(count);
+           const onImportFailed = () => reject('CSV import failed.');
+           Alert.alert('Import Settings', 'Would you like to append quotes to your existing collection or overwrite it completely?', [
+             { text: 'Overwrite', onPress: () => this._doCsvImport(contents, IMPORT_MODE_OVERWRITE, onImportFinished, onImportFailed) },
+             { text: 'Append', onPress: () => this._doCsvImport(contents, IMPORT_MODE_APPEND, onImportFinished, onImportFailed) }
+           ]);
+         }));
      });
+ };
+
+ _doCsvImport = (contents, importMode, onImportFinished, onImportFailed) => {
+   return Quotes.importCsv(Papa.parse(contents), importMode).then(onImportFinished).catch(onImportFailed);
  };
 
  exportQuotes = () => {
