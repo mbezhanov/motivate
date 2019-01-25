@@ -1,5 +1,6 @@
 import { SQLite } from 'expo';
 import LoremPicsum from './LoremPicsum';
+import { shuffle } from 'lodash';
 
 export const IMPORT_MODE_APPEND = 1;
 export const IMPORT_MODE_OVERWRITE = 2;
@@ -9,6 +10,8 @@ class Quotes {
     this.db = SQLite.openDatabase('quotes.db');
     this.db.transaction(tx => {
       tx.executeSql('create table if not exists quotes (id integer primary key not null, content text, author text, book text, times_seen int default 0);');
+      tx.executeSql('create index if not exists quotes_authors on quotes (author);');
+      tx.executeSql('create index if not exists quotes_books on quotes (book);');
     });
   }
 
@@ -50,8 +53,11 @@ class Quotes {
   random = () => {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
+        const columns = shuffle(['id', 'author', 'book']);
+        const randomColumn = columns[0];
         const randomDirection = Math.round(Math.random()) ? 'asc' : 'desc';
-        tx.executeSql(`select * from quotes order by times_seen asc, id ${randomDirection} limit 1;`, [], (tx, resultSet) => {
+
+        tx.executeSql(`select * from quotes order by times_seen asc, ${randomColumn} ${randomDirection} limit 1;`, [], (tx, resultSet) => {
           const { rows: { _array }} = resultSet;
           const quote = _array.length > 0 ? _array[0] : null;
 
