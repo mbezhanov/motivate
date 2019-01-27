@@ -84,7 +84,7 @@ class FormScreen extends Component {
           content: this.state.quote,
           author: this.state.author,
           book: this.state.book,
-          imageUrl: LoremPicsum.getDefaultImage(),
+          imageUrl: LoremPicsum.getRandomImage(this.state.quote),
         });
         this.setState({
           ...initialState,
