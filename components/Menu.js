@@ -45,10 +45,13 @@ export default class Menu extends Component {
 
   _onImportButtonPress = () => {
     this._toggleMenuItems(() => {
+      const shouldShowPrompt = (this.props.quote !== null);
       Csv
-        .importQuotes()
+        .importQuotes(shouldShowPrompt)
         .then(count => {
-          Alert.alert('Success', `Imported ${count} quotes.`);
+          Alert.alert('Success', `Imported ${count} quotes.`, [
+            { text: 'OK', onPress: () => this.props.onSuccessfulImport() },
+          ]);
         })
         .catch(() => {
           Alert.alert('Error', 'An error occurred.');
@@ -89,7 +92,7 @@ export default class Menu extends Component {
   _onDeleteButtonPress = () => {
     this._toggleMenuItems(() => {
       Alert.alert('Delete Quote', 'Are you sure you want to delete this quote?', [
-        { text: 'OK', onPress: () => this.props.onDelete(this.props.quote.id) },
+        { text: 'OK', onPress: () => this.props.onDelete() },
         { text: 'Cancel', style: 'cancel' },
       ]);
     })

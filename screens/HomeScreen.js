@@ -1,44 +1,40 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
+import { ImageBackground, RefreshControl, StyleSheet, ScrollView, View } from 'react-native';
+import { connect } from 'react-redux';
+import { loadRandomQuote, deleteCurrentQuote } from '../store/actions/quotes';
+import { clearToast } from '../store/actions/ui';
 import StyledText from '../components/StyledText';
 import Menu from '../components/Menu';
 import Quote from '../components/Quote';
 import Toast from '../components/Toast';
 import Sizes from '../constants/Sizes';
-import Quotes from '../services/Quotes';
 import LoremPicsum from '../services/LoremPicsum';
 
 class HomeScreen extends Component {
 
   static navigationOptions = { header: null };
 
-  state = {
-    loaded: false,
-    quote: null,
-    toast: null,
-    imageUrl: LoremPicsum.getDefaultImage(),
-  };
-
   render() {
     let quote;
     let toast;
 
-    if (this.state.loaded) {
-      quote = this.state.quote ? <Quote quote={this.state.quote} /> : <StyledText size={Sizes.XL}>Your collection is empty.</StyledText>;
+    if (!this.props.loading) {
+      quote = this.props.quote ? <Quote quote={this.props.quote} /> : <StyledText size={Sizes.XL}>Your collection is empty.</StyledText>;
     }
 
-    if (this.state.toast) {
-      toast = <Toast content={this.state.toast} transparent={true} onComplete={this._destroyToast}/>;
+    if (this.props.toast) {
+      toast = <Toast content={this.props.toast} transparent={true} onComplete={this.props.clearToast} />;
     }
+    const imageUrl = this.props.quote ? this.props.quote.imageUrl : LoremPicsum.getDefaultImage();
 
     return (
-      <ImageBackground source={{uri: this.state.imageUrl}}  style={{width: '100%', height: '100%'}}>
+      <ImageBackground source={{uri: imageUrl }}  style={{width: '100%', height: '100%'}}>
         <ScrollView
           contentContainerStyle={styles.container}
           refreshControl={
             <RefreshControl
-              refreshing={!this.state.loaded}
-              onRefresh={this._handleRefresh}
+              refreshing={this.props.loading}
+              onRefresh={this.props.loadRandomQuote}
             />
           }
         >
@@ -47,9 +43,10 @@ class HomeScreen extends Component {
             {toast}
           </View>
           <Menu
-            quote={this.state.quote}
+            quote={this.props.quote}
             navigation={this.props.navigation}
-            onDelete={id => this._handleDelete(id)}
+            onDelete={this.props.deleteCurrentQuote}
+            onSuccessfulImport={this.props.loadRandomQuote}
           />
         </ScrollView>
       </ImageBackground>
@@ -57,59 +54,7 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
-    this._displayRandomQuote();
-  }
-
-  _handleRefresh = () => {
-    this.setState({ loaded: false }, () => {
-      this._displayRandomQuote();
-    });
-  };
-
-  _handleDelete = (id) => {
-    Quotes
-      .delete(id)
-      .then(() => {
-        this._displayRandomQuote();
-      })
-      .catch(() => {
-        this.setState({
-          loaded: true,
-          toast: 'error',
-        });
-      });
-  };
-
-  _displayRandomQuote = () => {
-    Quotes
-      .random()
-      .then(quote => {
-        if (!quote) {
-          this.setState({ loaded: true });
-          return;
-        }
-
-        return Image
-          .prefetch(quote.imageUrl)
-          .then(() => {
-            this.setState({
-              quote,
-              loaded: true,
-              imageUrl: quote.imageUrl,
-            });
-          });
-
-      })
-      .catch(() => {
-        this.setState({
-          loaded: true,
-          toast: 'error',
-        });
-      });
-  };
-
-  _destroyToast = () => {
-    this.setState({ toast: null });
+    this.props.loadRandomQuote();
   }
 }
 
@@ -127,4 +72,20 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomeScreen;
+const mapStateToProps = (state) => {
+  return {
+    loading: state.ui.loading,
+    toast: state.ui.toast,
+    quote: state.quotes.selectedQuote,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadRandomQuote: () => dispatch(loadRandomQuote()),
+    deleteCurrentQuote: () => dispatch(deleteCurrentQuote()),
+    clearToast: () => dispatch(clearToast()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

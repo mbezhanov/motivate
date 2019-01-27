@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
 import StyledInput from '../components/StyledInput';
 import SubmitButton from '../components/SubmitButton';
 import Toast from '../components/Toast';
 import Colors from '../constants/Colors';
 import Quotes from '../services/Quotes';
+import LoremPicsum from '../services/LoremPicsum';
+import { updateLoadedQuote } from '../store/actions/quotes';
 
 const initialState = {
   id: null,
@@ -14,7 +17,7 @@ const initialState = {
   toast: null,
 };
 
-export default class FormScreen extends Component {
+class FormScreen extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     headerStyle: {
@@ -27,7 +30,7 @@ export default class FormScreen extends Component {
     headerRight: <SubmitButton onPress={(navigation.state.params || {}).onSubmit}/>
   });
 
-  state = {...initialState, showToast: false};
+  state = { ...initialState };
 
   render() {
     let toast;
@@ -75,7 +78,14 @@ export default class FormScreen extends Component {
   _insertQuote = () => {
     Quotes
       .insert(this.state.quote, this.state.author, this.state.book)
-      .then(() => {
+      .then(id => {
+        this.props.updateLoadedQuote({
+          id: id,
+          content: this.state.quote,
+          author: this.state.author,
+          book: this.state.book,
+          imageUrl: LoremPicsum.getDefaultImage(),
+        });
         this.setState({
           ...initialState,
           toast: 'quote added',
@@ -93,6 +103,12 @@ export default class FormScreen extends Component {
     Quotes
       .update(this.state.id, this.state.quote, this.state.author, this.state.book)
       .then(() => {
+        this.props.updateLoadedQuote({
+          id: this.state.id,
+          content: this.state.quote,
+          author: this.state.author,
+          book: this.state.book,
+        });
         this.setState({
           toast: 'quote updated',
         });
@@ -117,3 +133,11 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateLoadedQuote: quote => dispatch(updateLoadedQuote(quote)),
+  }
+};
+
+export default connect(null, mapDispatchToProps)(FormScreen);

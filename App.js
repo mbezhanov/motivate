@@ -1,8 +1,12 @@
 import React from 'react';
 import { Image } from 'react-native';
+import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import LoremPicsum from './services/LoremPicsum';
+import configureStore from './store/configureStore';
+
+const store = configureStore();
 
 export default class App extends React.Component {
   state = {
@@ -20,7 +24,11 @@ export default class App extends React.Component {
       );
     }
 
-    return <AppNavigator />;
+    return (
+      <Provider store={store}>
+        <AppNavigator />
+      </Provider>
+    );
   }
 
   _loadResourcesAsync = async () => {

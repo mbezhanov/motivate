@@ -5,7 +5,7 @@ import moment from 'moment';
 import Quotes, { IMPORT_MODE_APPEND, IMPORT_MODE_OVERWRITE } from './Quotes';
 
 class Csv {
- importQuotes = () => {
+ importQuotes = (shouldShowPrompt) => {
    return DocumentPicker
      .getDocumentAsync()
      .then(document => {
@@ -19,6 +19,11 @@ class Csv {
          .then(contents => new Promise((resolve, reject) => {
            const onImportFinished = count => resolve(count);
            const onImportFailed = () => reject('CSV import failed.');
+
+           if (!shouldShowPrompt) {
+             // we don't need to show the "Overwrite or Append" prompt during the very first import!
+              return this._doCsvImport(contents, IMPORT_MODE_APPEND, onImportFinished, onImportFailed);
+           }
            Alert.alert('Import Settings', 'Would you like to append quotes to your existing collection or overwrite it completely?', [
              { text: 'Overwrite', onPress: () => this._doCsvImport(contents, IMPORT_MODE_OVERWRITE, onImportFinished, onImportFailed) },
              { text: 'Append', onPress: () => this._doCsvImport(contents, IMPORT_MODE_APPEND, onImportFinished, onImportFailed) }
