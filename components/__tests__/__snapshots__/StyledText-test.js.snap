@@ -1,0 +1,162 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StyledText accepts custom styling 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "margin": 16,
+      "marginHorizontal": 123,
+      "marginVertical": 456,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "position": "relative",
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "left": 2,
+            "position": "absolute",
+            "textAlign": "center",
+            "top": 2,
+          },
+          Object {
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      Test 123
+    </Text>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#fff",
+            "textAlign": "center",
+          },
+          Object {
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      Test 123
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`StyledText renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "margin": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "position": "relative",
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "left": 2,
+            "position": "absolute",
+            "textAlign": "center",
+            "top": 2,
+          },
+          Object {
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      Test 123
+    </Text>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#fff",
+            "textAlign": "center",
+          },
+          Object {
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      Test 123
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`StyledText renders text with a custom font size 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "margin": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "position": "relative",
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "left": 2,
+            "position": "absolute",
+            "textAlign": "center",
+            "top": 2,
+          },
+          Object {
+            "fontSize": 123,
+          },
+        ]
+      }
+    >
+      Test 123
+    </Text>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#fff",
+            "textAlign": "center",
+          },
+          Object {
+            "fontSize": 123,
+          },
+        ]
+      }
+    >
+      Test 123
+    </Text>
+  </View>
+</View>
+`;

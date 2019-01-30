@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { AntDesign, Octicons } from '@expo/vector-icons';
 import StyledText from './StyledText';
-import Sizes from "../constants/Sizes";
+import Sizes from '../constants/Sizes';
 import Colors from '../constants/Colors';
+import PropTypes from 'prop-types';
 
 const button = (props) => {
   const Icon = ['upload', 'download'].indexOf(props.icon) !== -1 ? AntDesign : Octicons;
@@ -18,6 +19,12 @@ const button = (props) => {
       </TouchableOpacity>
     </View>
   );
+};
+
+button.propTypes = {
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

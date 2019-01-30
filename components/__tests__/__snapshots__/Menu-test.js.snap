@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Menu delegates control to the CSV service when an export is requested 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -11,11 +11,11 @@
+  >
+    <View
+      style={
+        Object {
+          \\"position\\": \\"relative\\",
+-         \\"right\\": -140,
++         \\"right\\": 8,
+        }
+      }
+    >
+      <MenuButton
+        icon=\\"download\\""
+`;
+
+exports[`Menu delegates control to the CSV service when an import is requested 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -11,11 +11,11 @@
+  >
+    <View
+      style={
+        Object {
+          \\"position\\": \\"relative\\",
+-         \\"right\\": 8,
++         \\"right\\": -140,
+        }
+      }
+    >
+      <MenuButton
+        icon=\\"download\\""
+`;
+
+exports[`Menu displays all hidden submenu items when the nav toggle switch is pressed 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -11,11 +11,11 @@
+  >
+    <View
+      style={
+        Object {
+          \\"position\\": \\"relative\\",
+-         \\"right\\": -140,
++         \\"right\\": 8,
+        }
+      }
+    >
+      <MenuButton
+        icon=\\"download\\""
+`;
+
+exports[`Menu hides all displayed submenu items when the nav toggle switch is pressed 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -11,11 +11,11 @@
+  >
+    <View
+      style={
+        Object {
+          \\"position\\": \\"relative\\",
+-         \\"right\\": 8,
++         \\"right\\": -140,
+        }
+      }
+    >
+      <MenuButton
+        icon=\\"download\\""
+`;
+
+exports[`Menu renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "flex-end",
+      "bottom": 16,
+      "justifyContent": "flex-end",
+      "position": "absolute",
+      "right": 16,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "position": "relative",
+        "right": -140,
+      }
+    }
+  >
+    <MenuButton
+      icon="download"
+      label="Import"
+      onPress={[Function]}
+    />
+    <MenuButton
+      icon="upload"
+      label="Export"
+      onPress={[Function]}
+    />
+    <MenuButton
+      icon="plus"
+      label="Add"
+      onPress={[Function]}
+    />
+    <MenuButton
+      icon="pencil"
+      label="Edit"
+      onPress={[Function]}
+    />
+    <MenuButton
+      icon="trashcan"
+      label="Delete"
+      onPress={[Function]}
+    />
+  </View>
+  <NavToggle
+    onPress={[Function]}
+    rotate={"0deg"}
+  />
+</View>
+`;

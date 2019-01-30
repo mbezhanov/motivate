@@ -5,6 +5,7 @@ import NavToggle from './NavToggle';
 import Sizes from '../constants/Sizes';
 import Colors from '../constants/Colors';
 import Csv from '../services/Csv';
+import PropTypes from 'prop-types';
 
 const ANIMATION_DURATION = 200; // milliseconds;
 
@@ -129,6 +130,20 @@ export default class Menu extends Component {
     });
   };
 }
+
+Menu.propTypes = {
+  quote: PropTypes.shape({
+    id: PropTypes.number,
+    author: PropTypes.string,
+    book: PropTypes.string,
+    content: PropTypes.string,
+    imageUrl: PropTypes.string,
+    times_seen: PropTypes.number,
+  }),
+  navigation: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onSuccessfulImport: PropTypes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {

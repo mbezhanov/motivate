@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, Animated } from 'react-native';
 import Colors from '../constants/Colors';
 import Sizes from '../constants/Sizes';
+import PropTypes from 'prop-types';
 
 const ANIMATION_DURATION = 600; // milliseconds;
 const TOAST_DURATION = 2000; // milliseconds
@@ -45,6 +46,12 @@ export default class Toast extends Component {
     );
   }
 }
+
+Toast.propTypes = {
+  content: PropTypes.string.isRequired,
+  transparent: PropTypes.bool,
+  onComplete: PropTypes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toast renders correctly with opaque background 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "alignSelf": "center",
+      "backgroundColor": "#555",
+      "borderRadius": 16,
+      "flex": 0,
+      "justifyContent": "center",
+      "margin": 16,
+      "opacity": 1,
+      "padding": 8,
+      "width": "40%",
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#bbb",
+        "fontSize": 16,
+      }
+    }
+  >
+    foo
+  </Text>
+</View>
+`;
+
+exports[`Toast renders correctly with transparent background 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -1,11 +1,11 @@
+  <View
+    style={
+      Object {
+        \\"alignItems\\": \\"center\\",
+        \\"alignSelf\\": \\"center\\",
+-       \\"backgroundColor\\": \\"#555\\",
++       \\"backgroundColor\\": \\"rgba(0, 0, 0, 0.5)\\",
+        \\"borderRadius\\": 16,
+        \\"flex\\": 0,
+        \\"justifyContent\\": \\"center\\",
+        \\"margin\\": 16,
+        \\"opacity\\": 1,"
+`;

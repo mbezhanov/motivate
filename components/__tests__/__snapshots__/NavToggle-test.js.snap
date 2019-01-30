@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavToggle can use a custom onPress handler 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -1,6 +1,8 @@
+- <TouchableWithoutFeedback>
++ <TouchableWithoutFeedback
++   onPress={[Function stub]}
++ >
+    <View
+      style={
+        Object {
+          \\"alignItems\\": \\"center\\",
+          \\"backgroundColor\\": \\"#2b2b2b\\","
+`;
+
+exports[`NavToggle can use an externally animated value to perform a rotation animation 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -15,11 +15,25 @@
+      <View
+        style={
+          Object {
+            \\"transform\\": Array [
+              Object {
+-               \\"rotate\\": undefined,
++               \\"rotate\\": Object {
++                 \\"_children\\": Array [],
++                 \\"_config\\": Object {
++                   \\"inputRange\\": Array [
++                     0,
++                     1,
++                   ],
++                   \\"outputRange\\": Array [
++                     \\"0deg\\",
++                     \\"225deg\\",
++                   ],
++                 },
++                 \\"_interpolation\\": [Function _interpolation],
++                 \\"_parent\\": 0,
++               },
+              },
+            ],
+          }
+        }
+      >"
+`;
+
+exports[`NavToggle renders correctly 1`] = `
+<TouchableWithoutFeedback>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#2b2b2b",
+        "borderRadius": 28,
+        "height": 56,
+        "justifyContent": "center",
+        "textAlign": "center",
+        "width": 56,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "transform": Array [
+            Object {
+              "rotate": undefined,
+            },
+          ],
+        }
+      }
+    >
+      <Octicons
+        color="#fff"
+        name="plus"
+        size={16}
+      />
+    </View>
+  </View>
+</TouchableWithoutFeedback>
+`;

@@ -5,7 +5,10 @@ import Sizes from '../constants/Sizes';
 
 class StyledInput extends Component {
 
-  state = { focused: false };
+  constructor(props) {
+    super(props);
+    this.state = { focused: false };
+  }
 
   render() {
     return (

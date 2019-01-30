@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Quote renders an empty View if no "quote" property is specified 1`] = `<View />`;
+
+exports[`Quote renders correctly 1`] = `
+<View>
+  <StyledText
+    size={28}
+  >
+    foo
+  </StyledText>
+  <StyledText
+    size={21}
+  >
+    bar
+  </StyledText>
+  <StyledText
+    size={16}
+  >
+    baz
+  </StyledText>
+</View>
+`;

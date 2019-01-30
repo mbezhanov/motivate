@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Colors from '../constants/Colors';
 import Sizes from '../constants/Sizes';
+import PropTypes from 'prop-types';
 
 const strokedText = props => (
   <View style={{ ...styles.container, ...props.style }}>
@@ -11,6 +12,16 @@ const strokedText = props => (
     </View>
   </View>
 );
+
+strokedText.propTypes = {
+  style: PropTypes.object,
+  size: PropTypes.number,
+  children: PropTypes.string.isRequired,
+};
+
+strokedText.defaultProps = {
+  size: 14
+};
 
 const styles = StyleSheet.create({
   container: {

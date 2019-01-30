@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StyledInput renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "margin": 16,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#bbb",
+        "fontSize": 12,
+      }
+    }
+  />
+  <TextInput
+    allowFontScaling={true}
+    multiline={false}
+    onBlur={[Function]}
+    onFocus={[Function]}
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 1,
+          "borderColor": "#555",
+          "color": "#bbb",
+          "fontSize": 16,
+          "marginTop": 12,
+        },
+        null,
+      ]
+    }
+    underlineColorAndroid="transparent"
+  />
+</View>
+`;
+
+exports[`StyledInput starts having a highlight effect when focused 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -25,11 +25,13 @@
+            \\"borderColor\\": \\"#555\\",
+            \\"color\\": \\"#bbb\\",
+            \\"fontSize\\": 16,
+            \\"marginTop\\": 12,
+          },
+-         null,
++         Object {
++           \\"borderColor\\": \\"#bbb\\",
++         },
+        ]
+      }
+      underlineColorAndroid=\\"transparent\\"
+    />
+  </View>"
+`;
+
+exports[`StyledInput stops having a highlight effect when unfocused 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -25,13 +25,11 @@
+            \\"borderColor\\": \\"#555\\",
+            \\"color\\": \\"#bbb\\",
+            \\"fontSize\\": 16,
+            \\"marginTop\\": 12,
+          },
+-         Object {
+-           \\"borderColor\\": \\"#bbb\\",
+-         },
++         null,
+        ]
+      }
+      underlineColorAndroid=\\"transparent\\"
+    />
+  </View>"
+`;

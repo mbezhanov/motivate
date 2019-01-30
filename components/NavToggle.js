@@ -3,6 +3,7 @@ import {Animated, StyleSheet, TouchableWithoutFeedback, View} from 'react-native
 import { Octicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import Sizes from '../constants/Sizes';
+import PropTypes from 'prop-types';
 
 const navToggle = ({ onPress, rotate }) => (
   <TouchableWithoutFeedback onPress={onPress}>
@@ -13,6 +14,11 @@ const navToggle = ({ onPress, rotate }) => (
     </View>
   </TouchableWithoutFeedback>
 );
+
+navToggle.propTypes = {
+  onPress: PropTypes.func,
+  rotate: PropTypes.object,
+};
 
 const styles = StyleSheet.create({
   button: {
