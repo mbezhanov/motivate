@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Alert, Animated, Easing, StyleSheet, View } from 'react-native';
+import { DocumentPicker } from 'expo';
 import MenuButton from './MenuButton';
 import NavToggle from './NavToggle';
 import Sizes from '../constants/Sizes';
 import Colors from '../constants/Colors';
 import Csv from '../services/Csv';
+import { IMPORT_MODE_APPEND, IMPORT_MODE_OVERWRITE } from '../services/Quotes';
 import PropTypes from 'prop-types';
 
 const ANIMATION_DURATION = 200; // milliseconds;
@@ -46,16 +48,32 @@ export default class Menu extends Component {
 
   _onImportButtonPress = () => {
     this._toggleMenuItems(() => {
-      const shouldShowPrompt = (this.props.quote !== null);
-      Csv
-        .importQuotes(shouldShowPrompt)
-        .then(count => {
-          Alert.alert('Success', `Imported ${count} quotes.`, [
-            { text: 'OK', onPress: () => this.props.onSuccessfulImport() },
-          ]);
-        })
-        .catch(() => {
-          Alert.alert('Error', 'An error occurred.');
+      const onImportSuccess = (count) => {
+        Alert.alert('Success', `Imported ${count} quotes.`, [
+          { text: 'OK', onPress: () => this.props.onSuccessfulImport() },
+        ]);
+      };
+      const onImportFail = () => {
+        Alert.alert('Error', 'An error occurred.');
+      };
+      DocumentPicker
+        .getDocumentAsync()
+        .then(document => {
+
+          if (document.type === 'cancel') {
+            Alert.alert('Import canceled', '');
+            return;
+          }
+          const shouldShowPrompt = (this.props.quote !== null);
+
+          if (shouldShowPrompt) {
+            Alert.alert('Import Settings', 'Would you like to append quotes to your existing collection or overwrite it completely?', [
+              { text: 'Overwrite', onPress: () => Csv.importQuotes(document.uri, IMPORT_MODE_OVERWRITE).then(onImportSuccess).catch(onImportFail) },
+              { text: 'Append', onPress: () => Csv.importQuotes(document.uri, IMPORT_MODE_APPEND).then(onImportSuccess).catch(onImportFail) }
+            ]);
+          } else {
+            Csv.importQuotes(document.uri, IMPORT_MODE_APPEND).then(onImportSuccess).catch(onImportFail);
+          }
         });
     });
   };

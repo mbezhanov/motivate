@@ -20,26 +20,6 @@ exports[`Menu delegates control to the CSV service when an export is requested 1
         icon=\\"download\\""
 `;
 
-exports[`Menu delegates control to the CSV service when an import is requested 1`] = `
-"Snapshot Diff:
-- First value
-+ Second value
-
-@@ -11,11 +11,11 @@
-  >
-    <View
-      style={
-        Object {
-          \\"position\\": \\"relative\\",
--         \\"right\\": 8,
-+         \\"right\\": -140,
-        }
-      }
-    >
-      <MenuButton
-        icon=\\"download\\""
-`;
-
 exports[`Menu displays all hidden submenu items when the nav toggle switch is pressed 1`] = `
 "Snapshot Diff:
 - First value
@@ -61,6 +41,26 @@ exports[`Menu displays all hidden submenu items when the nav toggle switch is pr
 `;
 
 exports[`Menu hides all displayed submenu items when the nav toggle switch is pressed 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -11,11 +11,11 @@
+  >
+    <View
+      style={
+        Object {
+          \\"position\\": \\"relative\\",
+-         \\"right\\": 8,
++         \\"right\\": -140,
+        }
+      }
+    >
+      <MenuButton
+        icon=\\"download\\""
+`;
+
+exports[`Menu lets the user pick a document when an import is requested 1`] = `
 "Snapshot Diff:
 - First value
 + Second value

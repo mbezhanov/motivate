@@ -40,7 +40,7 @@ const setSelectedQuote = (quote) => {
 export const deleteCurrentQuote = () => {
   return (dispatch, getState) => {
     Quotes
-      .delete(getState().quotes.selectedQuote.id)
+      .remove(getState().quotes.selectedQuote.id)
       .then(() => {
         dispatch(loadRandomQuote());
       })

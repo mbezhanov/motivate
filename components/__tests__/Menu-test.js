@@ -1,11 +1,13 @@
 import React from 'react';
 import { Alert } from 'react-native';
+import { DocumentPicker } from 'expo';
 import renderer from 'react-test-renderer';
 import snapshotDiff from 'snapshot-diff';
 import Menu from '../Menu';
 import MenuButton from '../MenuButton';
 import NavToggle from '../NavToggle';
 import Csv from '../../services/Csv';
+import { IMPORT_MODE_APPEND, IMPORT_MODE_OVERWRITE } from '../../services/Quotes';
 
 jest.mock('../MenuButton', () => 'MenuButton');
 jest.mock('../NavToggle', () => 'NavToggle');
@@ -30,7 +32,13 @@ jest.mock('Animated', () => {
     },
   };
 });
+jest.mock('expo', () => ({
+  DocumentPicker: {
+    getDocumentAsync: jest.fn(),
+  },
+}));
 jest.mock('../../services/Csv');
+jest.mock('../../services/Quotes');
 jest.mock('Alert', () => ({ alert: jest.fn() }));
 
 const _press = (component) => {
@@ -40,6 +48,13 @@ const _press = (component) => {
 const _toggleSubmenu = (treeRoot) => {
   const navToggle = treeRoot.findByType(NavToggle);
   _press(navToggle);
+};
+
+const mockImportedDocument = {
+  name: 'test.csv',
+  size: 64,
+  type: 'success',
+  uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540mbezhanov%252Fmotivate/DocumentPicker/9e018921-301a-4c0b-9869-f69db3ed760fcsv'
 };
 
 describe('Menu', () => {
@@ -59,6 +74,7 @@ describe('Menu', () => {
         onSuccessfulImport={onSuccessfulImport}
       />
     );
+    Csv.importQuotes.mockClear();
     Alert.alert.mockClear();
   });
 
@@ -85,37 +101,69 @@ describe('Menu', () => {
     expect(diff).toMatchSnapshot();
   });
 
-  it('delegates control to the CSV service when an import is requested', async () => {
-    _toggleSubmenu(tree.root);
+  it('lets the user pick a document when an import is requested', async () => {
+    DocumentPicker.getDocumentAsync.mockResolvedValueOnce(mockImportedDocument);
     Csv.importQuotes.mockResolvedValueOnce(123);
+    _toggleSubmenu(tree.root);
     const a = tree.toJSON();
     const importButton = tree.root.findByProps({ label: 'Import' });
     await _press(importButton);
+    expect(DocumentPicker.getDocumentAsync).toBeCalledTimes(1);
     const b = tree.toJSON();
     const diff = snapshotDiff(a, b);
-    expect(Alert.alert).toBeCalledTimes(1);
-    expect(Alert.alert.mock.calls[0][0]).toEqual('Success');
-    expect(Alert.alert.mock.calls[0][1].indexOf('123')).not.toEqual(-1);
     expect(diff).toMatchSnapshot();
   });
 
-  it('displays an error message if the CSV import fails', async () => {
+  it('directly delegates control to the CSV service if the database is empty', async () => {
+    tree = renderer.create(
+      <Menu
+        navigation={navigation}
+        quote={null}
+        onDelete={onDelete}
+        onSuccessfulImport={onSuccessfulImport}
+      />
+    );
+    DocumentPicker.getDocumentAsync.mockResolvedValueOnce(mockImportedDocument);
+    Csv.importQuotes.mockResolvedValueOnce(123);
     _toggleSubmenu(tree.root);
-    Csv.importQuotes.mockRejectedValueOnce();
     const importButton = tree.root.findByProps({ label: 'Import' });
     await _press(importButton);
-    expect(Alert.alert).toBeCalledTimes(1);
-    expect(Alert.alert.mock.calls[0][0]).toEqual('Error');
+    expect(Csv.importQuotes).toBeCalledTimes(1);
   });
 
-  it('raises an event if the CSV import is successful', async () => {
+  it('asks the user whether new quotes should be appended to or overwrite the existing collection, if the database is not empty', async () => {
+    _toggleSubmenu(tree.root);
+    DocumentPicker.getDocumentAsync.mockResolvedValueOnce(mockImportedDocument);
     Csv.importQuotes.mockResolvedValueOnce(123);
     const importButton = tree.root.findByProps({ label: 'Import' });
     await _press(importButton);
     expect(Alert.alert).toBeCalledTimes(1);
-    const okButton = Alert.alert.mock.calls[0][2][0];
-    okButton.onPress();
-    expect(onSuccessfulImport).toBeCalledTimes(1);
+    expect(Alert.alert.mock.calls[0][2][0].text).toEqual('Overwrite');
+    expect(Alert.alert.mock.calls[0][2][1].text).toEqual('Append');
+  });
+
+  it('can instruct the Csv service to overwrite the existing collection', async () => {
+    _toggleSubmenu(tree.root);
+    DocumentPicker.getDocumentAsync.mockResolvedValueOnce(mockImportedDocument);
+    Csv.importQuotes.mockResolvedValueOnce(123);
+    const importButton = tree.root.findByProps({ label: 'Import' });
+    await _press(importButton);
+    Alert.alert.mock.calls[0][2][0].onPress();
+    expect(Csv.importQuotes).toBeCalledTimes(1);
+    expect(Csv.importQuotes.mock.calls[0][0]).toEqual(mockImportedDocument.uri);
+    expect(Csv.importQuotes.mock.calls[0][1]).toEqual(IMPORT_MODE_OVERWRITE);
+  });
+
+  it('can instruct the Csv service to append new quotes to the existing collection', async () => {
+    _toggleSubmenu(tree.root);
+    DocumentPicker.getDocumentAsync.mockResolvedValueOnce(mockImportedDocument);
+    Csv.importQuotes.mockResolvedValueOnce(123);
+    const importButton = tree.root.findByProps({ label: 'Import' });
+    await _press(importButton);
+    Alert.alert.mock.calls[0][2][1].onPress();
+    expect(Csv.importQuotes).toBeCalledTimes(1);
+    expect(Csv.importQuotes.mock.calls[0][0]).toEqual(mockImportedDocument.uri);
+    expect(Csv.importQuotes.mock.calls[0][1]).toEqual(IMPORT_MODE_APPEND);
   });
 
   it('delegates control to the CSV service when an export is requested', async () => {
