@@ -7,7 +7,7 @@ export const loadRandomQuote = () => {
   return dispatch => {
     dispatch(loadingStart());
 
-    Quotes
+    return Quotes
       .random()
       .then(quote => {
         if (!quote) {
@@ -39,7 +39,7 @@ const setSelectedQuote = (quote) => {
 
 export const deleteCurrentQuote = () => {
   return (dispatch, getState) => {
-    Quotes
+    return Quotes
       .remove(getState().quotes.selectedQuote.id)
       .then(() => {
         dispatch(loadRandomQuote());

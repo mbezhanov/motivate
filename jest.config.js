@@ -8,5 +8,6 @@ module.exports = {
      */
     '\\.js$': '<rootDir>/jest.preprocessor.js',
   },
-  collectCoverage: true
+  collectCoverage: true,
+  collectCoverageFrom: ["**/*.js", "!**/*.{config,preprocessor}.js", "!**/node_modules/**", "!**/coverage/**"],
 };
