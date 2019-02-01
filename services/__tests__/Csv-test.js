@@ -13,8 +13,6 @@ const importedDocumentContents = 'Quote 1;AAuthor;Zbook\n' +
   'Quote 2;BAuthor;Ybook\n' +
   'Quote 3;CAuthor;Xbook\n';
 
-Date.now = jest.fn(() => 1234567898000);
-
 jest.mock('../Quotes');
 jest.mock('expo', () => ({
   FileSystem: {
@@ -25,6 +23,9 @@ jest.mock('expo', () => ({
   MailComposer: {
     composeAsync: jest.fn(() => Promise.resolve()),
   },
+}));
+jest.mock('moment', () => () => ({
+  format: () => '2009-02-14-01-31-38', // mock today's date
 }));
 
 const _performCsvImport = async (importMode) => {
