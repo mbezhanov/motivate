@@ -2,6 +2,8 @@
   "expo": {
     "name": "Motivate!",
     "slug": "motivate",
+    "description": "Mobile app for collecting inspiring quotes, thoughts and ideas.",
+    "githubUrl": "https://github.com/mbezhanov/motivate",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
