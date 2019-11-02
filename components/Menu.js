@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Animated, Easing, StyleSheet, View } from 'react-native';
-import { DocumentPicker } from 'expo';
+import * as DocumentPicker from 'expo-document-picker';
 import MenuButton from './MenuButton';
 import NavToggle from './NavToggle';
 import Sizes from '../constants/Sizes';

@@ -1,4 +1,5 @@
-import { FileSystem, MailComposer } from 'expo';
+import * as FileSystem from 'expo-file-system';
+import * as MailComposer from 'expo-mail-composer';
 import Quotes, { IMPORT_MODE_APPEND, IMPORT_MODE_OVERWRITE } from '../Quotes';
 import Csv from '../Csv';
 

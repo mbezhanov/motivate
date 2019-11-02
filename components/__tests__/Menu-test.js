@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert } from 'react-native';
-import { DocumentPicker } from 'expo';
+import * as DocumentPicker from 'expo-document-picker';
 import renderer from 'react-test-renderer';
 import snapshotDiff from 'snapshot-diff';
 import Menu from '../Menu';

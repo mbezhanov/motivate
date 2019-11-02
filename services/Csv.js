@@ -1,4 +1,5 @@
-import { FileSystem, MailComposer } from 'expo';
+import * as FileSystem from 'expo-file-system';
+import * as MailComposer from 'expo-mail-composer';
 import Papa from 'papaparse';
 import moment from 'moment';
 import Quotes from './Quotes';
