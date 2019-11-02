@@ -1,6 +1,6 @@
 import Quotes, { IMPORT_MODE_OVERWRITE, IMPORT_MODE_APPEND } from '../Quotes';
 
-jest.mock('expo', () => ({
+jest.mock('expo-sqlite', () => ({
   SQLite: {
     openDatabase: () => {
       const sqlite3 = require('sqlite3').verbose();

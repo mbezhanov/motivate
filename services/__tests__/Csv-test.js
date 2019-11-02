@@ -15,15 +15,13 @@ const importedDocumentContents = 'Quote 1;AAuthor;Zbook\n' +
   'Quote 3;CAuthor;Xbook\n';
 
 jest.mock('../Quotes');
-jest.mock('expo', () => ({
-  FileSystem: {
-    readAsStringAsync: jest.fn(),
-    writeAsStringAsync: jest.fn(() => Promise.resolve()),
-    documentDirectory: 'file:///data/user/0/',
-  },
-  MailComposer: {
-    composeAsync: jest.fn(() => Promise.resolve()),
-  },
+jest.mock('expo-file-system', () => ({
+  readAsStringAsync: jest.fn(),
+  writeAsStringAsync: jest.fn(() => Promise.resolve()),
+  documentDirectory: 'file:///data/user/0/',
+}));
+jest.mock('expo-mail-composer', () => ({
+  composeAsync: jest.fn(() => Promise.resolve()),
 }));
 jest.mock('moment', () => () => ({
   format: () => '2009-02-14-01-31-38', // mock today's date

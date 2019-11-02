@@ -21,6 +21,7 @@ exports[`StyledInput renders correctly 1`] = `
     multiline={false}
     onBlur={[Function]}
     onFocus={[Function]}
+    rejectResponderTermination={true}
     style={
       Array [
         Object {
@@ -43,7 +44,7 @@ exports[`StyledInput starts having a highlight effect when focused 1`] = `
 - First value
 + Second value
 
-@@ -25,11 +25,13 @@
+@@ -26,11 +26,13 @@
             \\"borderColor\\": \\"#555\\",
             \\"color\\": \\"#bbb\\",
             \\"fontSize\\": 16,
@@ -65,7 +66,7 @@ exports[`StyledInput stops having a highlight effect when unfocused 1`] = `
 - First value
 + Second value
 
-@@ -25,13 +25,11 @@
+@@ -26,13 +26,11 @@
             \\"borderColor\\": \\"#555\\",
             \\"color\\": \\"#bbb\\",
             \\"fontSize\\": 16,

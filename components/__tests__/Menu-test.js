@@ -32,10 +32,8 @@ jest.mock('Animated', () => {
     },
   };
 });
-jest.mock('expo', () => ({
-  DocumentPicker: {
-    getDocumentAsync: jest.fn(),
-  },
+jest.mock('expo-document-picker', () => ({
+  getDocumentAsync: jest.fn(),
 }));
 jest.mock('../../services/Csv');
 jest.mock('../../services/Quotes');

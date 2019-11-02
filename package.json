@@ -8,7 +8,15 @@
     "test": "node_modules/.bin/jest"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/jest.setup.js"
+    ]
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.0",
@@ -32,9 +40,9 @@
     "expo-constants": "~5.0.1"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0",
-    "jest-expo": "^32.0.0",
-    "react-test-renderer": "^16.7.0",
+    "babel-preset-expo": "^5.1.0",
+    "jest-expo": "^33.0.2",
+    "react-test-renderer": "^16.8.6",
     "redux-mock-store": "^1.5.3",
     "snapshot-diff": "^0.5.0",
     "sqlite3": "^4.1.0"
