@@ -12,8 +12,8 @@ import { IMPORT_MODE_APPEND, IMPORT_MODE_OVERWRITE } from '../../services/Quotes
 jest.mock('../MenuButton', () => 'MenuButton');
 jest.mock('../NavToggle', () => 'NavToggle');
 
-jest.mock('Animated', () => {
-  const ActualAnimated = jest.requireActual('Animated');
+jest.mock('react-native/Libraries/Animated/src/Animated', () => {
+  const ActualAnimated = jest.requireActual('react-native/Libraries/Animated/src/Animated');
   return {
     ...ActualAnimated,
     timing: (value, config) => {
@@ -37,7 +37,7 @@ jest.mock('expo-document-picker', () => ({
 }));
 jest.mock('../../services/Csv');
 jest.mock('../../services/Quotes');
-jest.mock('Alert', () => ({ alert: jest.fn() }));
+jest.mock('react-native/Libraries/Alert/Alert', () => ({ alert: jest.fn() }));
 
 const _press = (component) => {
   component.props.onPress(); // simulate press on component

@@ -3,10 +3,10 @@ import renderer from 'react-test-renderer';
 import snapshotDiff from 'snapshot-diff';
 import NavToggle from '../NavToggle';
 
-jest.mock('TouchableWithoutFeedback', () => 'TouchableWithoutFeedback');
+jest.mock('react-native/Libraries/Components/Touchable/TouchableWithoutFeedback', () => 'TouchableWithoutFeedback');
 
 jest.mock('@expo/vector-icons', () => {
-  const React = require('React');
+  const React = require('react');
   class Octicons extends React.Component {
     render() {
       return React.createElement('Octicons', this.props, this.props.children)

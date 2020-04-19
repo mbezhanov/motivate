@@ -3,10 +3,10 @@ import renderer from 'react-test-renderer';
 import snapshotDiff from 'snapshot-diff';
 import MenuButton from '../MenuButton';
 
-jest.mock('TouchableOpacity', () => 'TouchableOpacity');
+jest.mock('react-native/Libraries/Components/Touchable/TouchableOpacity', () => 'TouchableOpacity');
 jest.mock('../StyledText', () => 'StyledText');
 jest.mock('@expo/vector-icons', () => {
-  const React = require('React');
+  const React = require('react');
   class AntDesign extends React.Component {
     render() {
       return React.createElement('AntDesign', this.props, this.props.children)

@@ -1,4 +1,5 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLiteLib from 'expo-sqlite';
+import { SQLite } from 'expo-sqlite';
 import LoremPicsum from './LoremPicsum';
 import { shuffle } from 'lodash';
 
@@ -11,7 +12,7 @@ const db = () => {
   if (connection) {
     return connection;
   }
-  connection = SQLite.openDatabase('quotes.db');
+  connection = SQLite !== undefined ? SQLite.openDatabase('quotes.db') : SQLiteLib.openDatabase('quotes.db');
   connection.transaction(tx => {
     tx.executeSql('create table if not exists quotes (id integer primary key not null, content text, author text, book text, times_seen int default 0);');
     tx.executeSql('create index if not exists quotes_authors on quotes (author);');

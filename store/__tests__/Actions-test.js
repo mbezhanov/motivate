@@ -11,7 +11,7 @@ const mockStore = configureMockStore(middlewares);
 const testQuote = { id: 123, content: 'foo', author: 'bar', book: 'baz' };
 
 jest.mock('../../services/Quotes');
-jest.mock('Image', () => ({
+jest.mock('react-native/Libraries/Image/Image', () => ({
   prefetch: jest.fn(),
 }));
 

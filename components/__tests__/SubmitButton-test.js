@@ -2,10 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import SubmitButton from '../SubmitButton';
 
-jest.mock('TouchableOpacity', () => 'TouchableOpacity');
+jest.mock('react-native/Libraries/Components/Touchable/TouchableOpacity', () => 'TouchableOpacity');
 
 jest.mock('@expo/vector-icons', () => {
-  const React = require('React');
+  const React = require('react');
   class Octicons extends React.Component {
     render() {
       return React.createElement('Octicons', this.props, this.props.children)

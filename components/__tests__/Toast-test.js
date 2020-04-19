@@ -3,8 +3,8 @@ import renderer from 'react-test-renderer';
 import snapshotDiff from 'snapshot-diff';
 import Toast from '../Toast';
 
-jest.mock('Animated', () => {
-  const ActualAnimated = jest.requireActual('Animated');
+jest.mock('react-native/Libraries/Animated/src/Animated', () => {
+  const ActualAnimated = jest.requireActual('react-native/Libraries/Animated/src/Animated');
   return {
     ...ActualAnimated,
     timing: (value, config) => {
